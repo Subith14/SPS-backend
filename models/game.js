@@ -1,19 +1,29 @@
-const mongoose = require('mongoose');
+// models/game.js
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../db');
 
-// Define the schema for the game data
-const gameSchema = new mongoose.Schema({
-  player1: { type: String, required: true },
-  player2: { type: String, required: true },
-  rounds: [
-    {
-      roundNumber: Number,
-      player1Choice: String,
-      player2Choice: String,
-      winner: String
-    }
-  ],
-  finalWinner: { type: String, required: true }
-}, { timestamps: true });
+// Define the Game model
+const Game = sequelize.define('Game', {
+  player1: {
+    type: DataTypes.STRING,
+    allowNull: false, // Ensure player1 is required
+  },
+  player2: {
+    type: DataTypes.STRING,
+    allowNull: false, // Ensure player2 is required
+  },
+  rounds: {
+    type: DataTypes.JSONB, // Store game rounds as JSONB
+    allowNull: false, // Ensure rounds are required
+  },
+  final_winner: { // Match PostgreSQL snake_case naming convention
+    type: DataTypes.STRING,
+    allowNull: false, // Ensure final_winner is required
+  },
+}, {
+  timestamps: true, // Automatically add createdAt and updatedAt
+  createdAt: 'created_at', // Customize createdAt field name
+  updatedAt: 'updated_at', // Customize updatedAt field name
+});
 
-const Game = mongoose.model('game', gameSchema);
 module.exports = Game;

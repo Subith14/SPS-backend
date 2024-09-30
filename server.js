@@ -1,31 +1,36 @@
+// server.js
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
-const gameRoutes = require('./routes/gameRoutes');
-require('dotenv').config();
+const gameRoutes = require('./routes/gameRoutes'); // Import game routes
+const { connectDB, sequelize } = require('./db');  // Import database connection and sequelize instance
+require('dotenv').config(); // Load environment variables
 
 // Initialize Express app
 const app = express();
 
 // Middleware
 app.use(cors());
-app.use(express.json()); // For parsing JSON requests
+app.use(express.json()); // Parse incoming JSON requests
 
-// Connect to MongoDB
-mongoose.connect(process.env.DATABASE)
+// Connect to PostgreSQL using Sequelize
+connectDB();
+
+// Sync Sequelize models with PostgreSQL (creates tables if not present)
+sequelize.sync()
   .then(() => {
-    console.log('MongoDB connected Successfully');
+    console.log('Database synced successfully');
   })
   .catch(err => {
-    console.error('MongoDB connection error:', err);
+    console.error('Error syncing database:', err);
   });
 
-app.use('/api', gameRoutes);
+// Routes
+app.use('/api', gameRoutes); // All API routes will be prefixed with '/api'
 
-// Define a port
+// Define a port (use environment variable or fallback to 5000)
 const PORT = process.env.PORT || 5000;
 
-// Listen to the server
+// Start the Express server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
