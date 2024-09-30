@@ -1,6 +1,6 @@
 // routes/gameRoutes.js
 const express = require('express');
-const Game = require('../models/Game'); // Import the Game model
+const Game = require('../models/game'); // Import the Game model
 
 const router = express.Router();
 
