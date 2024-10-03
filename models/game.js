@@ -21,9 +21,9 @@ const Game = sequelize.define('Game', {
     allowNull: false, // Ensure final_winner is required
   },
 }, {
-  timestamps: true, // Automatically add createdAt and updatedAt
-  createdAt: 'created_at', // Customize createdAt field name
-  updatedAt: 'updated_at', // Customize updatedAt field name
+  timestamps: true, // Automatically add createdAt and updatedAt fields
+  createdAt: 'created_at', // Custom field name for createdAt
+  updatedAt: 'updated_at', // Custom field name for updatedAt
 });
 
 module.exports = Game;
